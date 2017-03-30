@@ -2,23 +2,24 @@
 
 # usage: ./pomodoro-timer 30m "Take a break!" "sound.mp3"
 
+#cmd="go run elapsed.go"
+#cmd="./elapsed"
+cmd="elapsed"
+
 duration="$1"
 msg="$2"
 sound="$3"
-player=mplayer
+title="$4"
+player="$5"
 
-if [ -z "$duration" ]; then
-    duration="30m"
-fi
+[ -n "$duration" ] || duration="30m"
+[ -n "$msg" ] || msg="Timer expired"
+[ -n "$sound" ] || sound="$HOME/sounds/break.mp3"
+#[ -n "$sound" ] || sound="/usr/share/sounds/freedesktop/stereo/complete.oga"
+#[ -n "$sound" ] || sound="$HOME/sounds/break-2.mp3"
+[ -n "$title" ] || title="Pomodoro timer"
+[ -n "$player" ] || player="mplayer"
+#[ -n "$player" ] || player="paplay"
 
-if [ -z "$msg" ]; then
-    msg="Take a break!"
-fi
-
-if [ -z "$sound" ]; then
-    #sound="$HOME/sounds/break-2.mp3"
-    sound="$HOME/sounds/break.mp3"
-fi
-
-watch -n 10 -bcet "elapsed -t \"Pomodoro timer\" $(elapsed $duration) || (notify-send \"$msg\" && $player \"$sound\" > /dev/null 2>&1 & false)"
+watch -n 10 -bcet "$cmd -t \"$title\" $($cmd $duration) || (notify-send \"$msg\" && $player \"$sound\" > /dev/null 2>&1 & false)"
 

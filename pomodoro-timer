@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# usage: ./pomodoro-timer 30m "Take a break!" "sound.mp3"
+
+duration="$1"
+msg="$2"
+sound="$3"
+player=mplayer
+
+if [ -z "$duration" ]; then
+    duration="30m"
+fi
+
+if [ -z "$msg" ]; then
+    msg="Take a break!"
+fi
+
+if [ -z "$sound" ]; then
+    #sound="$HOME/sounds/break-2.mp3"
+    sound="$HOME/sounds/break.mp3"
+fi
+
+watch -n 10 -bcet "elapsed -t \"Pomodoro timer\" $(elapsed $duration) || (notify-send \"$msg\" && $player \"$sound\" > /dev/null 2>&1 & false)"
+

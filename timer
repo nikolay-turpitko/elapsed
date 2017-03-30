@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# usage: ./timer 10s "Take a break!" "complete.oga"
+
+duration="$1"
+msg="$2"
+sound="$3"
+#player=paplay
+player=mplayer
+
+if [ -z "$duration" ]; then
+    duration="1m"
+fi
+
+if [ -z "$msg" ]; then
+    msg="Timer expired"
+fi
+
+if [ -z "$sound" ]; then
+    sound="/usr/share/sounds/freedesktop/stereo/complete.oga"
+fi
+
+watch -bce "./elapsed -t "Timer" $(./elapsed $duration) || (notify-send \"$msg\" && $player \"$sound\" > /dev/null 2>&1 && false)"
+

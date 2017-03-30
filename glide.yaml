@@ -1,0 +1,4 @@
+package: github.com/nikolay-turpitko/elapsed
+import:
+- package: github.com/fatih/color
+  version: ^1.4.1

@@ -11,6 +11,7 @@ msg="$2"
 sound="$3"
 title="$4"
 player="$5"
+logfile="$6"
 
 [ -n "$duration" ] || duration="30m"
 [ -n "$msg" ] || msg="Timer expired"
@@ -20,6 +21,18 @@ player="$5"
 [ -n "$title" ] || title="Pomodoro timer"
 [ -n "$player" ] || player="mplayer"
 #[ -n "$player" ] || player="paplay"
+[ -n "$logfile" ] || logfile="elapsed.log"
+
+start=$(date --rfc-3339=seconds)
+
+function logtime {
+    now=$(date --rfc-3339=seconds)
+    echo "$0; $msg; $start; $now" >> "$logfile"
+    exit
+}
+
+trap logtime SIGHUP SIGINT SIGTERM
 
 watch -n 10 -bcet "$cmd -t \"$title\" $($cmd $duration) || (notify-send \"$msg\" && $player \"$sound\" > /dev/null 2>&1 & false)"
 
+logtime

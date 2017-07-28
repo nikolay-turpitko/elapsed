@@ -23,11 +23,16 @@ logfile="$6"
 #[ -n "$player" ] || player="paplay"
 [ -n "$logfile" ] || logfile="elapsed.log"
 
+[ -f "$logfile" ] || (echo "timer; title; start; end; diff" > "$logfile")
+
 start=$(date --rfc-3339=seconds)
+startsec=$(date -u +"%s")
 
 function logtime {
     now=$(date --rfc-3339=seconds)
-    echo "$0; $msg; $start; $now" >> "$logfile"
+    nowsec=$(date -u +"%s")
+    diff=$(date -u -d "0 $nowsec sec - $startsec sec" +"%H:%M:%S")
+    echo "$0; $title; $start; $now; $diff" >> "$logfile"
     exit
 }
 

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cmd="pomodoro-timer"
+$cmd 40m "Take a break!" "$HOME/sonds/break.mp3" "WORK TIMER "

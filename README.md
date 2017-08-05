@@ -53,6 +53,6 @@ directories to track time spent on different tasks.
 
 Using [CSV Kit](http://csvkit.rtfd.org/)
 tool (Ubuntu: `sudo apt install python3-csvkit`) it's easy to calculate the time
-spent on particular task, something like:
+spent on particular task, something like (also, see `./time-spent`):
 
-    csvsql --query "select sum(\"diff(sec)\")/3600 from elapsed where title like 'WORK TIMER'" ./elapsed.log | csvlook
+    csvsql --query "select strftime(\"%Y-%m\", start) \"period\", time(sum(\"diff(sec)\"), 'unixepoch') \"hours\" from elapsed where title like 'WORK TIMER' group by strftime(\"%Y-%m\", start)" ./elapsed.log | csvlook

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# show time spent on tasks by period
+
+# $1 - path to elapsed.log
+# $2 - "days" for days interval, months by default
+
+tf="%Y-%m"
+
+if [ "$2" = "days" ]; then
+    tf="%Y-%m-%d"
+fi
+
+query="select title, strftime(\"$tf\", start) \"period\", \
+    time(sum(\"diff(sec)\"), 'unixepoch') \"hours\" \
+    from elapsed \
+    group by title, strftime(\"$tf\", start)"
+
+csvsql --query "$query" "$1" | csvlook

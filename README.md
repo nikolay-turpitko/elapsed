@@ -50,3 +50,9 @@ started and stopped and elapsed time.  This file can be easily imported to
 Libreoffice Calc, for instance, to calculate time spent on task during week or
 month, etc.  Also, it's possible to start timers from different working
 directories to track time spent on different tasks.
+
+Using [CSV Kit](http://csvkit.rtfd.org/)
+tool (Ubuntu: `sudo apt install python3-csvkit`) it's easy to calculate the time
+spent on particular task, something like:
+
+    csvsql --query "select sum(\"diff(sec)\")/3600 from elapsed where title like 'WORK TIMER'" ./elapsed.log | csvlook

@@ -12,7 +12,8 @@ if [ "$2" = "days" ]; then
 fi
 
 query="select title, strftime(\"$tf\", start) \"period\", \
-    time(sum(\"diff(sec)\"), 'unixepoch') \"hours\" \
+    replace(strftime('%j days %H:%M:%S', sum(\"diff(sec)\"), 'unixepoch', '-1 day'), '365', '000') \"duration\", \
+    printf(\"%.2f\", sum(\"diff(sec)\")/3600.0)  \"hours\" \
     from elapsed \
     group by title, strftime(\"$tf\", start)"
 

@@ -4,17 +4,27 @@
 
 # $1 - path to elapsed.log
 # $2 - "days" for days interval, months by default
+# $3 - limit - number of records to display (records are sorted in descending order)
 
 tf="%Y-%m"
+rate=12.36
 
 if [ "$2" = "days" ]; then
     tf="%Y-%m-%d"
 fi
 
+limit=10
+if [ -n "$3" ]; then
+    limit="$3"
+fi
+
 query="select title, strftime(\"$tf\", start) \"period\", \
     replace(strftime('%j days %H:%M:%S', sum(\"diff(sec)\"), 'unixepoch', '-1 day'), '365', '000') \"duration\", \
-    printf(\"%.2f\", sum(\"diff(sec)\")/3600.0)  \"hours\" \
+    printf(\"%.2f\", sum(\"diff(sec)\")/3600.0)  \"hours\", \
+    printf(\"%.2f\", $rate*sum(\"diff(sec)\")/3600.0) \"$\" \
     from elapsed \
-    group by title, strftime(\"$tf\", start)"
+    group by title, strftime(\"$tf\", start) \
+    order by 2 desc, 1 \
+    limit $limit"
 
 csvsql --query "$query" "$1" | csvlook

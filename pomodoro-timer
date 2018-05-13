@@ -15,13 +15,13 @@ logfile="$6"
 
 [ -n "$duration" ] || duration="30m"
 [ -n "$msg" ] || msg="Timer expired"
-[ -n "$sound" ] || sound="$HOME/sounds/break.mp3"
+[ -n "$sound" ] || sound="$HOME/.elapsed/sounds/break.mp3"
 #[ -n "$sound" ] || sound="/usr/share/sounds/freedesktop/stereo/complete.oga"
-#[ -n "$sound" ] || sound="$HOME/sounds/break-2.mp3"
+#[ -n "$sound" ] || sound="$HOME/.elapsed/sounds/break-2.mp3"
 [ -n "$title" ] || title="Pomodoro timer"
-[ -n "$player" ] || player="mplayer"
-#[ -n "$player" ] || player="paplay"
-[ -n "$logfile" ] || logfile="elapsed.log"
+#[ -n "$player" ] || player="mplayer"
+[ -n "$player" ] || player="aplay"
+[ -n "$logfile" ] || logfile="$HOME/.elapsed/elapsed.log"
 
 [ -f "$logfile" ] || (echo "timer; title; start; end; diff; diff(sec)" > "$logfile")
 
